@@ -1,9 +1,8 @@
 import React from "react"
 import { graphql, Link } from "gatsby"
-import { GatsbyImage } from "gatsby-plugin-image" 
-import { StaticImage } from "gatsby-plugin-image"
+import { StaticImage, GatsbyImage } from "gatsby-plugin-image"
 
-function Home({data}) {
+function Home({ data }) {
   const projects = data.projects.nodes
 
   return (
@@ -11,18 +10,22 @@ function Home({data}) {
       <StaticImage
         src="../../images/dogs.webp"
         alt="dogs"
-        width={1000}
+        layout="fixed"
+        width={200}
+        height={200}
         placeholder="blurred"
         transformOptions={{ grayscale: true }}
       ></StaticImage>
- 
+
       <div>
         <div>
           {projects.map(project => (
             <Link to={`/projects/${project.frontmatter.slug}`} key={project.id}>
               <div>
                 <GatsbyImage
-                  image={project.frontmatter.thumb.childImageSharp.gatsbyImageData}
+                  image={
+                    project.frontmatter.thumb.childImageSharp.gatsbyImageData
+                  }
                 />
                 <h3>{project.frontmatter.title}</h3>
                 <p>{project.frontmatter.stack}</p>
@@ -31,7 +34,6 @@ function Home({data}) {
           ))}
         </div>
       </div>
- 
     </div>
   )
 }
@@ -49,7 +51,11 @@ export const query = graphql`
           title
           thumb {
             childImageSharp {
-              gatsbyImageData(layout: CONSTRAINED)
+              gatsbyImageData(
+                layout: CONSTRAINED
+                width: 200
+                placeholder: BLURRED
+              )
             }
           }
         }
@@ -59,4 +65,4 @@ export const query = graphql`
   }
 `
 
-export default Home 
+export default Home
